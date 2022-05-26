@@ -5,89 +5,58 @@
 // minimum marks obtained in that 
 // subject. Use heap data structure. 
 // Analyze the algorithm.
-#include<iostream>
+// C++ program for implementation of Heap Sort
+#include <iostream>
 using namespace std;
 
-class hp
+void heapify(int arr[], int n, int i)
 {
-   int heap[20],heap1[20],x,n1,i;
-   public:
-   hp()
-   { heap[0]=0;  heap1[0]=0;
-   } 
-   void getdata();
-   void insert1(int heap[],int);
-   void upadjust1(int heap[],int);
-   void insert2(int heap1[],int);
-   void upadjust2(int heap1[],int);
-   void minmax();
-};
-void hp::getdata()
-{  
-   cout<<"\n enter the no. of students";
-   cin>>n1;
-   cout<<"\n enter the marks";
-   for(i=0;i<n1;i++)
-   {   cin>>x;
-       insert1(heap,x);
-       insert2(heap1,x);
-   }
+	int largest = i;
+	int l = 2 * i + 1;
+	int r = 2 * i + 2;
+
+	if (l < n && arr[l] > arr[largest])
+		largest = l;
+
+	if (r < n && arr[r] > arr[largest])
+		largest = r;
+
+	if (largest != i) {
+		swap(arr[i], arr[largest]);
+		heapify(arr, n, largest);
+	}
 }
-void hp::insert1(int heap[20],int x)
+
+void heapSort(int arr[], int n)
 {
-   int n;
-   n=heap[0]; 
-   heap[n+1]=x;
-   heap[0]=n+1;
-  
-   upadjust1(heap,n+1);
+	for (int i = n / 2 - 1; i >= 0; i--)
+		heapify(arr, n, i);
+
+	for (int i = n - 1; i > 0; i--) {
+		swap(arr[0], arr[i]);
+		heapify(arr, i, 0);
+	}
 }
-void hp::upadjust1(int heap[20],int i)
+
+void printArray(int arr[], int n)
 {
-    int temp;
-    while(i>1&&heap[i]>heap[i/2])
-    {
-       temp=heap[i];
-       heap[i]=heap[i/2];
-       heap[i/2]=temp;
-       i=i/2;
-    }
+	for (int i = 0; i < n; ++i)
+		cout << arr[i] << " ";
+	cout << "\n";
 }
-void hp::insert2(int heap1[20],int x)
-{
-   int n;
-   n=heap1[0]; 
-   heap1[n+1]=x;
-   heap1[0]=n+1;
-  
-   upadjust2(heap1,n+1);
-}
-void hp::upadjust2(int heap1[20],int i)
-{
-    int temp1;
-    while(i>1&&heap1[i]<heap1[i/2])
-    {
-       temp1=heap1[i];
-       heap1[i]=heap1[i/2];
-       heap1[i/2]=temp1;
-       i=i/2;
-    }
-}
-void hp::minmax()
-{
-   cout<<"\n max marks"<<heap[1];
-   cout<<"\n##";
-   for(i=0;i<=n1;i++)
-   {   cout<<"\n"<<heap[i];  }
-   cout<<"\n min marks"<<heap1[1];
-   cout<<"\n##";
-   for(i=0;i<=n1;i++)
-   {   cout<<"\n"<<heap1[i];  }
-}
+
 int main()
-{  
-  hp h;
-  h.getdata();
-  h.minmax();
-  return 0;
+{
+   int n;
+   cout<<"Enter no. of students : ";
+   cin>>n;
+	int arr[n];
+   cout<<"Enter Marks of students : ";
+   for (int i = 0; i < n; i++)
+   {
+      cin>>arr[i];
+   }
+	heapSort(arr, n);
+   cout<<"Min marks is : "<<arr[0]<<endl;
+   cout<<"Max marks is : "<<arr[n-1];
 }
